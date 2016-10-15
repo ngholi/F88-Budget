@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "f88budget",
+    "password": "iERP@!!042013",
+    "database": "F88_BUDGET",
+    "host": "115.84.179.6",
+    "dialect": "mssql"
+  },
+  "test": {
+    "username": "f88budget",
+    "password": "iERP@!!042013",
+    "database": "F88_BUDGET",
+    "host": "115.84.179.6",
+    "dialect": "mssql"
+  },
+  "production": {
+    "username": "f88budget",
+    "password": "iERP@!!042013",
+    "database": "F88_BUDGET",
+    "host": "115.84.179.6",
+    "dialect": "mssql"
+  }
+}
