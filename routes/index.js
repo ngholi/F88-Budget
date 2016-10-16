@@ -9,10 +9,10 @@ var Department = db.Department;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	 Department.findAll({
-	 	include:[User]
-	 }).then(function(dpms){
-	 	res.json({departments:dpms});
+	 User.findAll({
+	 	include:[Department]
+	 }).then(function(users){
+	 	res.json({users:users});
 	 })	
 });
 

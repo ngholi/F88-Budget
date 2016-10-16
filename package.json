@@ -13,8 +13,11 @@
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
     "express": "~4.13.4",
+    "express-validator": "^2.20.10",
+    "jsonwebtoken": "^7.1.9",
     "morgan": "~1.7.0",
     "mssql": "^3.3.0",
+    "node-cache": "^4.1.0",
     "node-uuid": "^1.4.7",
     "serve-favicon": "~2.3.0",
     "tedious": "^1.14.0"
