@@ -2,7 +2,9 @@ var util = require('util');
 var db = require('../models/index');
 var uuid = require('node-uuid');
 var bcrypt = require('bcrypt-nodejs');
-var registerCriteria = require('./validation-criteria').registerCriteria;
+var validationRules = require('./validation-rules');
+var registerRules = validationRules.registerRules;
+var loginRules = validationRules.loginRules;
 
 var User = db.User;
 var Department = db.Department;
@@ -13,8 +15,7 @@ var authService = {};
 
 
 authService.checkLoginCredentials = function(req, callback){
-	req.checkBody('email', 'Invalid email').notEmpty().isEmail();
-	req.checkBody('password', 'Invalid password').notEmpty();
+	req.checkBody(loginRules);
 
 	var errors = req.validationErrors();
 	if (errors) {
@@ -45,7 +46,7 @@ authService.checkLoginCredentials = function(req, callback){
 }
 
 authService.register = function(req, callback){
-	req.checkBody(registerCriteria);
+	req.checkBody(registerRules);
 
 	var errors = req.validationErrors();
 	if (errors) {	

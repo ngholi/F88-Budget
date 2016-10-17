@@ -10,6 +10,7 @@ var expressValidator = require('express-validator');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/authenticate');
+var departments = require('./routes/departments');
 
 var authMiddleware = require('./middlewares/auth');
 
@@ -34,6 +35,7 @@ app.use(authMiddleware.verifyToken);
 app.use('/', routes);
 app.use('/users', users);
 app.use('/authenticate', auth);
+app.use('/departments', departments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
