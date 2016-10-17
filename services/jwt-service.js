@@ -22,43 +22,46 @@ jwtservice.generateJWT = function(user){
 	return jwt.sign(userInfo,JWT_KEY);
 };
 
-jwtservice.verifyToken = function(tokenString, callback){
+jwtservice.verifyToken = function(tokenString){
 	//verify the authorization
-	if(tokenString && tokenString.substring(0,7) == "Bearer "){	
-		var token = tokenString.substr("Bearer ".length);
-
-		jwt.verify(token, JWT_KEY, function(err, payload){
-			if(err){
-				callback(null);
-			}
-			else{
-				//find in cache
-				var user = userCache.get(payload.id);
-				if(user && isEqual(user, payload)){
-					callback(payload);
+	return new Promise(function(fulfill,reject){
+		if(tokenString && tokenString.substring(0,7) == "Bearer "){
+			var token = tokenString.substr("Bearer ".length);
+			jwt.verify(token, JWT_KEY, function(err, payload){
+				if(err || payload.exp < Math.floor(Date.now()/1000)){
+					reject();
+				}else{
+					var user = userCache.get(payload.id);
+					if(user && isEqual(user, payload)){
+						fulfill(payload);
+					}
+					else{
+						User.findOne({
+							 where: {
+							 	id: payload.id,
+							 	name: payload.name,
+							 	email: payload.email
+							 },
+						}).then(function(user){
+							if(user)
+								fulfill(payload);
+							else
+								reject();
+						}).catch(function(err){
+							reject();
+						})
+					}
 				}
-				else{
-					//find in db
-					User.findOne({
-						 where: {id: payload.id, name: payload.name, email: payload.email},
-					}).then(function(user){
-						if(user)
-							callback(payload);
-						else
-							callback(null);
-					}).catch(function(err){
-						callback(null);
-					})
-				}			
-			}
-		})
-	}else{		
-		callback(null);
-	}	
+			})
+		}else{
+			reject();
+		}
+	})
 }
 
 var isEqual = function(user, payload){
-	if(user.id == payload.id && user.name == payload.name && user.email == payload.email && user.exp == payload.exp)
+	if(user.id == payload.id && user.name == payload.name && 
+		user.email == payload.email && user.exp == payload.exp)
 		return true;
 	else
 		return false;

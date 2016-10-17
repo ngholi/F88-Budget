@@ -6,25 +6,28 @@ var addDepartmentRules = validationRules.addDepartmentRules;
 
 var departmentService = {};
 
-departmentService.addDepartment = function(req, callback){
-	req.checkBody(addDepartmentRules);
+departmentService.addDepartment = function(req){
+	return new Promise(function(fulfill,reject){
+		req.checkBody(addDepartmentRules);
 
-	var errors = req.validationErrors();
+		var errors = req.validationErrors();
 
-	if(errors){
-		callback(null, util.inspect(errors));
-	}else{
-		Department.create(req.body)
-		.then(function(department){
-			if(!department)
-				callback(null, 'Invalid info');
-			else
-				callback(department, null);
-		})
-		.catch(function(err){
-			callback(null, err);
-		})
-	}
+		if(errors){
+			reject(util.inspect(errors));
+		}else{
+			Department.create(req.body)
+			.then(function(department){
+				if(!department)
+					reject('Invalid info');
+				else
+					fulfill(department);
+			})
+			.catch(function(err){
+				reject(err);
+			})
+		}
+	})
+	
 }
 
 module.exports = departmentService;
