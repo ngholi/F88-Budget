@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
         Department.belongsTo(models.User,{foreignKey:'managerId', targetKey:'id'});
+        Department.belongsTo(models.Department,{foreignKey:'parentDepartmentId', targetKey: 'id'});
       }
     }
   });
