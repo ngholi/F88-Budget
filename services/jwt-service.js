@@ -33,6 +33,7 @@ jwtservice.verifyToken = function(tokenString){
 				}else{
 					var user = userCache.get(payload.id);
 					if(user && isEqual(user, payload)){
+						console.log('CACHED');
 						fulfill(payload);
 					}
 					else{
@@ -43,8 +44,15 @@ jwtservice.verifyToken = function(tokenString){
 							 	email: payload.email
 							 },
 						}).then(function(user){
-							if(user)
+							if(user){
+								userCache.set(payload.id,{
+								 	id: payload.id,
+								 	name: payload.name,
+								 	email: payload.email,
+								 	exp: payload.exp
+								 });
 								fulfill(payload);
+							}
 							else
 								reject();
 						}).catch(function(err){
