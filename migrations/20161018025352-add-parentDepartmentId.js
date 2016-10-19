@@ -9,23 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model : 'Departments',
-          key: 'id'
+          key: 'id',
+          onDelete : 'SET NULL'
         }
       }
     )
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.addColumn(
+    return queryInterface.removeColumn(
       'Departments',
-      'parentDepartmentId',
-      {
-        type: Sequelize.INTEGER,
-        references: {
-          model : 'Departments',
-          key: 'id'
-        }
-      }
+      'parentDepartmentId'
     )
   }
 };
